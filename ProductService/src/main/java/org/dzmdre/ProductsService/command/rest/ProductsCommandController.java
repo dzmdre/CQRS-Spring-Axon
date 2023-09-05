@@ -36,32 +36,7 @@ public class ProductsCommandController {
 		.title(createProductRestModel.getTitle())
 		.productId(UUID.randomUUID().toString()).build();
 		
-		String returnValue;
-		
-		returnValue = commandGateway.sendAndWait(createProductCommand);
-
-//		try {
-//			returnValue = commandGateway.sendAndWait(createProductCommand);
-//		} catch (Exception ex) {
-//			returnValue = ex.getLocalizedMessage();
-//		}
-	
+		String returnValue = commandGateway.sendAndWait(createProductCommand);
 		return returnValue;
 	}
-	
-//	@GetMapping
-//	public String getProduct() {
-//		return "HTTP GET Handled " + env.getProperty("local.server.port");
-//	}
-//	
-//	@PutMapping
-//	public String updateProduct() {
-//		return "HTTP PUT Handled";
-//	}
-//	
-//	@DeleteMapping
-//	public String deleteProduct() {
-//		return "HTTP DELETE handled";
-//	}
-
 }

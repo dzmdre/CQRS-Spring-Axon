@@ -16,9 +16,6 @@ import lombok.Data;
 @Data
 public class ProductEntity implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -227264951080660124L;
 	
 	@Id
@@ -29,5 +26,4 @@ public class ProductEntity implements Serializable {
 	private String title;
 	private BigDecimal price;
 	private Integer quantity;
-
 }

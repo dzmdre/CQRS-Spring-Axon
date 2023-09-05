@@ -18,9 +18,6 @@ import lombok.NoArgsConstructor;
 @Table(name="productlookup")
 public class ProductLookupEntity implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2788007460547645663L;
 	
 	@Id
@@ -28,5 +25,4 @@ public class ProductLookupEntity implements Serializable {
 	
 	@Column(unique=true)
 	private String title;
-
 }
