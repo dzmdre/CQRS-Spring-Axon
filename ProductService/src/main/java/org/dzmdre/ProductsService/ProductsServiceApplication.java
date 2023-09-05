@@ -27,7 +27,6 @@ public class ProductsServiceApplication {
 	public void registerCreateProductCommandInterceptor(ApplicationContext context, 
 			CommandBus commandBus) {
 		commandBus.registerDispatchInterceptor(context.getBean(CreateProductCommandInterceptor.class));
-		
 	}
 	
 	@Autowired

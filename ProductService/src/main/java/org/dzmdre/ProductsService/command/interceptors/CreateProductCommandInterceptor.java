@@ -1,9 +1,7 @@
 package org.dzmdre.ProductsService.command.interceptors;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.function.BiFunction;
-
 import org.axonframework.commandhandling.CommandMessage;
 import org.axonframework.messaging.MessageDispatchInterceptor;
 import org.dzmdre.ProductsService.command.CreateProductCommand;
