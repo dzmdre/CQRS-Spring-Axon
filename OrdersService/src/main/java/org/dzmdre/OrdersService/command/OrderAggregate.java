@@ -2,6 +2,7 @@ package org.dzmdre.OrdersService.command;
 
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
+import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 import org.dzmdre.OrdersService.command.rest.CreateOrderCommand;
@@ -17,6 +18,7 @@ public class OrderAggregate {
     private String userId;
     private String addressId;
     private OrderStatus orderStatus;
+    @AggregateIdentifier
     private String orderId;
     private String productId;
 

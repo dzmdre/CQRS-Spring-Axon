@@ -2,6 +2,8 @@ package org.dzmdre.ProductsService.query;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.axonframework.queryhandling.QueryHandler;
 import org.dzmdre.ProductsService.core.data.ProductEntity;
@@ -21,19 +23,15 @@ public class ProductsQueryHandler {
 	
 	@QueryHandler
 	public List<ProductRestModel> findProducts(FindProductsQuery query) {
-		
-		List<ProductRestModel> productsRest = new ArrayList<>();
-		
 		List<ProductEntity> storedProducts =  productsRepository.findAll();
-		
-		for(ProductEntity productEntity: storedProducts) {
-			ProductRestModel productRestModel = new ProductRestModel();
-			BeanUtils.copyProperties(productEntity, productRestModel);
-			productsRest.add(productRestModel);
-		}
-		
-		return productsRest;
-		
+		return storedProducts.stream()
+				.map(this::getProductRestModel)
+				.collect(Collectors.toList());
 	}
 
+	private ProductRestModel getProductRestModel(ProductEntity productEntity){
+		ProductRestModel productRestModel = new ProductRestModel();
+		BeanUtils.copyProperties(productEntity, productRestModel);
+		return productRestModel;
+	}
 }

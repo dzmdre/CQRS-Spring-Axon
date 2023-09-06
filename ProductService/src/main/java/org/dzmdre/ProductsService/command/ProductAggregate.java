@@ -25,51 +25,39 @@ public class ProductAggregate {
 	private Integer quantity;
 	
 	public ProductAggregate() {
-		
 	}
 	
 	@CommandHandler
 	public ProductAggregate(CreateProductCommand createProductCommand) {
-		// Validate Create Product Command
-		
 		if(createProductCommand.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
 			throw new IllegalArgumentException("Price cannot be less or equal than zero");
 		}
-		
-		if(createProductCommand.getTitle() == null 
+		if(createProductCommand.getTitle() == null
 				|| createProductCommand.getTitle().isBlank()) {
 			throw new IllegalArgumentException("Title cannot be empty");
 		}
-		
 		ProductCreatedEvent productCreatedEvent = new ProductCreatedEvent();
-		
 		BeanUtils.copyProperties(createProductCommand, productCreatedEvent);
-		
 		AggregateLifecycle.apply(productCreatedEvent);
 	}
 	
 	@CommandHandler
 	public void handle(ReserveProductCommand reserveProductCommand) {
-		
 		if(quantity < reserveProductCommand.getQuantity()) {
 			throw new IllegalArgumentException("Insufficient number of items in stock");
 		}
-		
 		ProductReservedEvent productReservedEvent = ProductReservedEvent.builder()
 				.orderId(reserveProductCommand.getOrderId())
 				.productId(reserveProductCommand.getProductId())
 				.quantity(reserveProductCommand.getQuantity())
 				.userId(reserveProductCommand.getUserId())
 				.build();
-		
 		AggregateLifecycle.apply(productReservedEvent);
-		
 	}
 	
 	@CommandHandler
 	public void handle(CancelProductReservationCommand cancelProductReservationCommand) {
-		
-		ProductReservationCancelledEvent productReservationCancelledEvent = 
+		ProductReservationCancelledEvent productReservationCancelledEvent =
 				ProductReservationCancelledEvent.builder()
 				.orderId(cancelProductReservationCommand.getOrderId())
 				.productId(cancelProductReservationCommand.getProductId())
@@ -77,17 +65,13 @@ public class ProductAggregate {
 				.reason(cancelProductReservationCommand.getReason())
 				.userId(cancelProductReservationCommand.getUserId())
 				.build();
-		
 		AggregateLifecycle.apply(productReservationCancelledEvent);
-		
 	}
-	
 	
 	@EventSourcingHandler
 	public void on(ProductReservationCancelledEvent productReservationCancelledEvent) {
 		this.quantity += productReservationCancelledEvent.getQuantity();
 	}
-	
 	
 	@EventSourcingHandler
 	public void on(ProductCreatedEvent productCreatedEvent) {
@@ -97,12 +81,8 @@ public class ProductAggregate {
 		this.quantity = productCreatedEvent.getQuantity();
 	}
 	
-	
 	@EventSourcingHandler
 	public void on(ProductReservedEvent productReservedEvent) {
 		this.quantity -= productReservedEvent.getQuantity();
 	}
-	
-	
-
 }

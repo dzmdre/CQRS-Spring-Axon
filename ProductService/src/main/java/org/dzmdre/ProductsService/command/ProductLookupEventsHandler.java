@@ -8,11 +8,12 @@ import org.dzmdre.ProductsService.core.data.ProductLookupRepository;
 import org.dzmdre.ProductsService.core.events.ProductCreatedEvent;
 import org.springframework.stereotype.Component;
 
+import static org.dzmdre.ProductsService.ProductsServiceApplication.PRODUCT_GROUP;
+
 
 @Component
-@ProcessingGroup("product-group")
+@ProcessingGroup(PRODUCT_GROUP)
 public class ProductLookupEventsHandler {
-	
 	private final ProductLookupRepository productLookupRepository;
 	
 	public ProductLookupEventsHandler(ProductLookupRepository productLookupRepository) {
@@ -21,12 +22,9 @@ public class ProductLookupEventsHandler {
 
 	@EventHandler
 	public void on(ProductCreatedEvent event) {
-		
 		ProductLookupEntity productLookupEntity = new ProductLookupEntity(event.getProductId(),
 				event.getTitle());
-		
 		productLookupRepository.save(productLookupEntity);
-		
 	}
 	
 	@ResetHandler

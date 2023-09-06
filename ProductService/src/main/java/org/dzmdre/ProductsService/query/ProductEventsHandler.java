@@ -17,14 +17,12 @@ import org.springframework.stereotype.Component;
 @Component
 @ProcessingGroup("product-group")
 public class ProductEventsHandler {
-
-	private final ProductsRepository productsRepository;
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProductEventsHandler.class);
-
+	private final ProductsRepository productsRepository;
 	public ProductEventsHandler(ProductsRepository productsRepository) {
 		this.productsRepository = productsRepository;
 	}
-	
+
 	@ExceptionHandler(resultType=Exception.class)
 	public void handle(Exception exception) throws Exception {
 		throw exception;
@@ -32,56 +30,41 @@ public class ProductEventsHandler {
 	
 	@ExceptionHandler(resultType=IllegalArgumentException.class)
 	public void handle(IllegalArgumentException exception) {
-		// Log error message
+		LOGGER.error(exception.getMessage(), exception);
 	}
-	
 
 	@EventHandler
 	public void on(ProductCreatedEvent event) {
-
 		ProductEntity productEntity = new ProductEntity();
 		BeanUtils.copyProperties(event, productEntity);
-
 		try {
 			productsRepository.save(productEntity);
 		} catch (IllegalArgumentException ex) {
-			ex.printStackTrace();
+			LOGGER.error(ex.getMessage(), ex);
 		}
-
 	}
 	
 	@EventHandler
 	public void on(ProductReservedEvent productReservedEvent) {
 		ProductEntity productEntity = productsRepository.findByProductId(productReservedEvent.getProductId());
-		
 		LOGGER.debug("ProductReservedEvent: Current product quantity " + productEntity.getQuantity());
-		
 		productEntity.setQuantity(productEntity.getQuantity() - productReservedEvent.getQuantity());
-		
-		
 		productsRepository.save(productEntity);
-		
 		LOGGER.debug("ProductReservedEvent: New product quantity " + productEntity.getQuantity());
- 	
-		LOGGER.info("ProductReservedEvent is called for productId:" + productReservedEvent.getProductId() +
+ 		LOGGER.info("ProductReservedEvent is called for productId:" + productReservedEvent.getProductId() +
 				" and orderId: " + productReservedEvent.getOrderId());
 	}
 	
 	@EventHandler
 	public void on(ProductReservationCancelledEvent productReservationCancelledEvent) {
-		ProductEntity currentlyStoredProduct =  productsRepository.findByProductId(productReservationCancelledEvent.getProductId());
-	
-		LOGGER.debug("ProductReservationCancelledEvent: Current product quantity " 
+		final ProductEntity currentlyStoredProduct =  productsRepository.findByProductId(productReservationCancelledEvent.getProductId());
+		LOGGER.debug("ProductReservationCancelledEvent: Current product quantity "
 		+ currentlyStoredProduct.getQuantity() );
-		
-		int newQuantity = currentlyStoredProduct.getQuantity() + productReservationCancelledEvent.getQuantity();
+		final int newQuantity = currentlyStoredProduct.getQuantity() + productReservationCancelledEvent.getQuantity();
 		currentlyStoredProduct.setQuantity(newQuantity);
-		
 		productsRepository.save(currentlyStoredProduct);
-		
-		LOGGER.debug("ProductReservationCancelledEvent: New product quantity " 
+		LOGGER.debug("ProductReservationCancelledEvent: New product quantity "
 		+ currentlyStoredProduct.getQuantity() );
-	
 	}
 	
 	@ResetHandler

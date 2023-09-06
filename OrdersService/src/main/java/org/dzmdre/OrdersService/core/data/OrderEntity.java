@@ -1,11 +1,13 @@
 package org.dzmdre.OrdersService.core.data;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import org.dzmdre.OrdersService.core.OrderStatus;
 
 import java.io.Serializable;
 
 @Entity
+@Data
 @Table(name = "orders")
 public class OrderEntity implements Serializable {
     private static final long serialVersionUID = -2224352345L;

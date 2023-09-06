@@ -35,7 +35,6 @@ public class OrdersCommandController {
                 .addressId(createOrderRestModel.getAddressId())
                 .productId(createOrderRestModel.getProductId())
                 .userId(USER_ID_CONSTANT).build();
-        String returnValue = commandGateway.sendAndWait(createOrderCommand);
-        return returnValue;
+        return commandGateway.sendAndWait(createOrderCommand);
     }
 }
