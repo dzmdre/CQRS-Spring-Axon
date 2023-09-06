@@ -31,6 +31,7 @@
         <module>ProductService</module>
         <module>OrdersService</module>
         <module>UsersService</module>
+        <module>PaymentsService</module>
     </modules>
 
     <repositories>
