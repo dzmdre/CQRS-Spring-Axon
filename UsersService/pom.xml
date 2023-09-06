@@ -4,24 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.dzmdre</groupId>
-	 	<artifactId>CQRS-Spring-Axon-App</artifactId>
+		<artifactId>CQRS-Spring-Axon-App</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>OrdersService</artifactId>
+	<artifactId>UsersService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>OrdersService</name>
-	<description>Axon Orders service</description>
-
+	<name>UsersService</name>
+	<description>UsersService for Spring Boot</description>
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.axonframework</groupId>
 			<artifactId>axon-spring-boot-starter</artifactId>
@@ -29,23 +19,19 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
+			<groupId>org.dzmdre</groupId>
+			<artifactId>Core-main</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
