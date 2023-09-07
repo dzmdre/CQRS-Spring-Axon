@@ -6,10 +6,12 @@ import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.spring.stereotype.Saga;
+import org.dzmdre.OrdersService.command.ApproveOrderCommand;
 import org.dzmdre.OrdersService.command.RejectOrderCommand;
 import org.dzmdre.OrdersService.events.OrderCreatedEvent;
 import org.dzmdre.core.commands.ProcessPaymentCommand;
 import org.dzmdre.core.commands.ReserveProductCommand;
+import org.dzmdre.core.events.PaymentProcessedEvent;
 import org.dzmdre.core.events.ProductReservedEvent;
 import org.dzmdre.core.model.User;
 import org.dzmdre.core.query.FetchUserPaymentDetailsQuery;
@@ -79,7 +81,6 @@ public class OrderSaga {
         } catch(Exception ex) {
             LOGGER.error(ex.getMessage(), ex);
             cancelProductReservation(productReservedEvent,ex.getMessage());
-            return;
         }
     }
 
@@ -88,4 +89,11 @@ public class OrderSaga {
         LOGGER.debug("Start compensating transaction");
     }
 
+    @SagaEventHandler(associationProperty="orderId")
+    public void handle(PaymentProcessedEvent paymentProcessedEvent) {
+        LOGGER.debug("Send an ApproveOrderCommand");
+        final ApproveOrderCommand approveOrderCommand =
+                new ApproveOrderCommand(paymentProcessedEvent.getOrderId());
+        commandGateway.send(approveOrderCommand);
+    }
 }
