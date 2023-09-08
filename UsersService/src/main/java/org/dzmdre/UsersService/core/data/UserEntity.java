@@ -23,5 +23,5 @@ public class UserEntity implements Serializable {
     private String lastName;
     @OneToMany(fetch=FetchType.EAGER)  //TODO: check perfomance!!! for now user is not required without payment details
     @Fetch(value=FetchMode.SELECT)
-    private List<PaymentDetailsEntity> listPaymentDetails;
+    private List<PaymentDetailsEntity> listPaymentDetailsEntity;
 }
