@@ -1,6 +1,11 @@
 package org.dzmdre.OrdersService.core.model;
 
+import lombok.Value;
+import org.dzmdre.OrdersService.core.OrderStatus;
+
+@Value
 public class OrderSummary {
-    public OrderSummary(Object orderId, Object orderStatus, String s) {
-    }
+    private final String orderId;
+    private final OrderStatus orderStatus;
+    private final String message;
 }

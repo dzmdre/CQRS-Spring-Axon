@@ -1,15 +1,14 @@
 package org.dzmdre.OrdersService.events;
 
+import jakarta.persistence.criteria.Order;
+import lombok.Data;
+import lombok.Value;
+import org.dzmdre.OrdersService.core.OrderStatus;
+
+@Value
+@Data
 public class OrderRejectedEvent {
-    public Object getOrderId() {
-        return null;
-    }
-
-    public Object getOrderStatus() {
-        return null;
-    }
-
-    public String getReason() {
-        return null;
-    }
+    private final String orderId;
+    private final String reason;
+    private final OrderStatus orderStatus = OrderStatus.REJECTED;
 }

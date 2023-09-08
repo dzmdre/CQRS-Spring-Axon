@@ -1,4 +1,4 @@
-package org.dzmdre.OrdersService.command.rest;
+package org.dzmdre.OrdersService.command;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,7 +1,11 @@
 package org.dzmdre.OrdersService.command;
 
-public class RejectOrderCommand {
-    public RejectOrderCommand(String orderId, String message) {
+import lombok.Value;
+import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
-    }
+@Value
+public class RejectOrderCommand {
+    @TargetAggregateIdentifier
+    private String orderId;
+    private String reason;
 }

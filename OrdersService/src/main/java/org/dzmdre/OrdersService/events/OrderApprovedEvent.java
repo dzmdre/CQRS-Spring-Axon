@@ -1,12 +1,10 @@
 package org.dzmdre.OrdersService.events;
 
+import lombok.Value;
+import org.dzmdre.OrdersService.core.OrderStatus;
+
+@Value
 public class OrderApprovedEvent {
-    public Object getOrderId() {
-
-        return null;
-    }
-
-    public Object getOrderStatus() {
-        return null;
-    }
+    private String orderId;
+    private OrderStatus orderStatus =  OrderStatus.APPROVED;
 }

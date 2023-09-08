@@ -1,10 +1,15 @@
 package org.dzmdre.OrdersService;
 
+import org.axonframework.config.ConfigurationScopeAwareProvider;
 import org.axonframework.config.EventProcessingConfigurer;
+import org.axonframework.deadline.DeadlineManager;
+import org.axonframework.config.Configuration;
+import org.axonframework.deadline.SimpleDeadlineManager;
 import org.axonframework.eventhandling.PropagatingErrorHandler;
 import org.axonframework.eventsourcing.EventCountSnapshotTriggerDefinition;
 import org.axonframework.eventsourcing.SnapshotTriggerDefinition;
 import org.axonframework.eventsourcing.Snapshotter;
+import org.axonframework.spring.messaging.unitofwork.SpringTransactionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,5 +35,15 @@ public class OrdersServiceApplication {
 	public void configure(EventProcessingConfigurer config) {
 		config.registerListenerInvocationErrorHandler(ORDER_GROUP,
 				conf -> PropagatingErrorHandler.instance());
+	}
+
+	@Bean
+	public DeadlineManager deadlineManager(Configuration configuration,
+										   SpringTransactionManager transactionManager) {
+
+		return SimpleDeadlineManager.builder()
+				.scopeAwareProvider(new ConfigurationScopeAwareProvider(configuration))
+				.transactionManager(transactionManager)
+				.build();
 	}
 }
