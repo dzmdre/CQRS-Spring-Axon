@@ -28,6 +28,8 @@ import org.dzmdre.core.query.FetchUserPaymentDetailsQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
+
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
@@ -92,9 +94,13 @@ public class OrderSaga {
             scheduleId =  deadlineManager.schedule(Duration.of(120, ChronoUnit.SECONDS),
                     PAYMENT_PROCESSING_TIMEOUT_DEADLINE, productReservedEvent);
             LOGGER.info("Successfully fetched user payment details for userId " + userPaymentDetails.getUserId());
+            if (CollectionUtils.isEmpty(userPaymentDetails.getPaymentDetailsList())) {
+                LOGGER.info("The PaymentDetails is null. Initiating a compensating transaction");
+                cancelProductReservation(productReservedEvent, "Could not process, no payment details");
+            }
             final ProcessPaymentCommand processPaymentCommand = ProcessPaymentCommand.builder()
                     .orderId(productReservedEvent.getOrderId())
-                    .paymentDetails(userPaymentDetails.getPaymentDetails())
+                    .paymentDetails(userPaymentDetails.getPaymentDetailsList().get(0))
                     .paymentId(UUID.randomUUID().toString())
                     .build();
             final String result = commandGateway.sendAndWait(processPaymentCommand);

@@ -22,7 +22,6 @@ public class UsersQueryController {
                 new FetchUserPaymentDetailsQuery(userId);
         return queryGateway
                 .query(query, ResponseTypes
-                        .instanceOf(User.class))
-                .join();
+                        .instanceOf(User.class)).join();
     }
 }
