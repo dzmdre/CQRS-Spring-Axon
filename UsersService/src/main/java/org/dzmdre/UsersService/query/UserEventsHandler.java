@@ -11,8 +11,6 @@ import org.dzmdre.core.query.FetchUserPaymentDetailsQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.dzmdre.core.model.User;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,12 +21,11 @@ public class UserEventsHandler {
     @Autowired
     private UsersRepository usersRepository;
 
-
     @EventHandler
     public User findUserPaymentDetails(FetchUserPaymentDetailsQuery query) {
         final UserEntity userEntity = usersRepository.findByUserId(query.getUserId());
         //TODO: UserEntity to user add payment details
-        final List<PaymentDetailsEntity> paymentDetailsEntities = new ArrayList<>();//usersRepository.findUserByUserId(query.getUserId());
+        final List<PaymentDetailsEntity> paymentDetailsEntities = userEntity.getListPaymentDetails();
         final List<PaymentDetails> paymentDetailsList =
                 paymentDetailsEntities.stream().map(this::paymentEntityToPaymentDetails).toList();
         return User.builder()
