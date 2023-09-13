@@ -78,3 +78,9 @@ hs_err_pid*
 /Core-main.iml
 /CQRS-Spring-Axon-App.iml
 /ServiceDiscovery.iml
+ApiGateway/src/.DS_Store
+.DS_Store
+AxonService/data/axonserver-controldb.mv.db
+AxonService/data/axonserver-controldb.trace.db
+AxonService/data/default/00000000000000000000.events
+AxonService/data/default/00000000000000000000.snapshots
